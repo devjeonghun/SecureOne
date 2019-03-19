@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SecureOne</string>
+    <string name="take_pic_btn_label">Take photos</string>
+    <string name="front_picture">Front Camera Picture</string>
+    <string name="back_picture">Back Camera Picture</string>
+    <string name="encrypt">encrypt</string>
+    <string name="decrypt">decrypt</string>
+</resources>
