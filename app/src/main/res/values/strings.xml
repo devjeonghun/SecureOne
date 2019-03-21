@@ -5,4 +5,6 @@
     <string name="back_picture">Back Camera Picture</string>
     <string name="encrypt">encrypt</string>
     <string name="decrypt">decrypt</string>
+    <string name="video">video</string>
+    <string name="photo">photo</string>
 </resources>

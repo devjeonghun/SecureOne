@@ -1,4 +1,4 @@
-package com.example.jhuncho.secureone;
+package com.example.jhuncho.secureone.services;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -23,8 +23,10 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
+import com.example.jhuncho.secureone.listeners.PictureCapturingListener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -136,12 +138,21 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
 
 
     private final ImageReader.OnImageAvailableListener onImageAvailableListener = (ImageReader imReader) -> {
-        final Image image = imReader.acquireLatestImage();
-        final ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        final byte[] bytes = new byte[buffer.capacity()];
-        buffer.get(bytes);
-        saveImageToDisk(bytes);
-        image.close();
+        Image image = null;
+        try {
+            image = imReader.acquireLatestImage();
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[buffer.capacity()];
+            buffer.get(bytes);
+            saveImageToDisk(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (image != null) {
+                image.close();
+                imReader.close();
+            }
+        }
     };
 
     private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
@@ -192,6 +203,18 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
         }
     };
 
+    private void showLevelSupported(CameraCharacteristics c) {
+        int deviceLevel = c.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
+        if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY) {
+            Log.i(TAG, "Level supported: legacy");
+        } else if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_3) {
+            Log.i(TAG, "Level supported: level 3");
+        } else if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL){
+            Log.i(TAG, "Level supported: full");
+        } else if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED){
+            Log.i(TAG, "Level supported: limited");
+        }
+    }
 
     private void takePicture() throws CameraAccessException {
         if (null == cameraDevice) {
@@ -199,6 +222,9 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
             return;
         }
         final CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
+
+        showLevelSupported(characteristics);
+
         Size[] jpegSizes = null;
         StreamConfigurationMap streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
         if (streamConfigurationMap != null) {
@@ -207,7 +233,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
         final boolean jpegSizesNotEmpty = jpegSizes != null && 0 < jpegSizes.length;
         int width = jpegSizesNotEmpty ? jpegSizes[0].getWidth() : 640;
         int height = jpegSizesNotEmpty ? jpegSizes[0].getHeight() : 480;
-        final ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
+        final ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 2);
         final List<Surface> outputSurfaces = new ArrayList<>();
         outputSurfaces.add(reader.getSurface());
         final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);

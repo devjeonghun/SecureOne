@@ -4,62 +4,47 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:id="@+id/activity_main"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical"
-                  android:paddingLeft="@dimen/activity_horizontal_margin"
-                  android:paddingRight="@dimen/activity_horizontal_margin"
-                  tools:context="com.hzitoun.camera2SecretPictureTaker.activities.MainActivity">
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                >
-
-            <ImageView
-                    android:id="@+id/backIV"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/back_picture" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-            <ImageView
-                    android:id="@+id/frontIV"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/front_picture" />
-
-        </RelativeLayout>
+                    tools:context="display.samsung.workplace.RelativeLayoutctivity">
 
         <Button
                 android:id="@+id/startCaptureBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="@string/take_pic_btn_label" />
+                android:text="@string/take_pic_btn_label" android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp" android:layout_alignParentTop="true"
+                android:layout_marginTop="124dp"/>
+        <ToggleButton
+                android:id="@+id/video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/video"
+                android:layout_alignParentTop="true" android:layout_marginTop="192dp"
+                android:layout_alignStart="@+id/startCaptureBtn"/>
+        <ToggleButton
+                android:id="@+id/photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/photo"
+                android:layout_alignParentStart="true" android:layout_marginStart="115dp"
+                android:layout_alignTop="@+id/video"/>
         <Button
                 android:id="@+id/encrypt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/encrypt" />
+                android:text="@string/video"
+                android:layout_alignTop="@+id/decrypt" android:layout_alignStart="@+id/photo"/>
         <Button
                 android:id="@+id/decrypt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="@string/decrypt" />
+                android:text="@string/photo"
+                android:layout_alignParentBottom="true" android:layout_marginBottom="189dp"
+                android:layout_alignStart="@+id/startCaptureBtn"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

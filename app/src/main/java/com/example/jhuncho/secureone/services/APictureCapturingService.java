@@ -1,4 +1,4 @@
-package com.example.jhuncho.secureone;
+package com.example.jhuncho.secureone.services;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.util.SparseIntArray;
 import android.view.Surface;
+import com.example.jhuncho.secureone.listeners.PictureCapturingListener;
 
 public abstract class APictureCapturingService {
     public final Activity activity;
